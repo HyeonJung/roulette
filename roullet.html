@@ -9,22 +9,23 @@
 #image{
   margin:50px 50px;z-index:10;
 }
-#n_id{position:absolute;left:490px;top:300px;z-index:20;}
-#start_btn{position:absolute;left:250px;top:240px;}
+#n_id{position:absolute;left:490px;top:297px;z-index:20;}
+#start_btn{position:absolute;left:240px;top:240px;}
 </style>
 </head>
 <body>
 
 <canvas id="circle" width="600" height="600"></canvas>
 <!--<img src="img/roulette.png" id="image">-->
+
 <img src="img/niddle.png" id="n_id">
 <img src="img/start.png" id="start_btn">
 <br />
 
-<input type="text" id="c1"/>
-<input type="text" id="c2"/>
-<input type="text" id="c3"/>
-<input type="text" id="c4"/>
+<input type="text" id="c1"/><br/>
+<input type="text" id="c2"/><br/>
+<input type="text" id="c3"/><br/>
+<input type="text" id="c4"/><br/>
 
 <input type="button" value="만들기" id="make"/>
 
@@ -32,15 +33,15 @@
 <div id="result_id"></div>
 <div id="result_id2"></div>
 <div id="result_id3"></div>
+
 <script>
-/* serpiko.tistory.com */
 window.onload = function(){
 
     draw();
     
     var pArr = ["c1","c2","c3","c4","c5"];
     var rate;
-    var color = ["","rgb(255, 0, 0)","rgb(0, 255, 0)","rgb(0, 0, 255)","rgb(255, 255, 0)"];
+
     $('#start_btn').click(function(){
         rotation();
     });
@@ -48,6 +49,7 @@ window.onload = function(){
     $('#make').click(function() {
         make();
     })
+
     function rotation(){
         $("#circle").rotate({
           angle:0,
@@ -83,6 +85,9 @@ window.onload = function(){
         return Math.floor(Math.random() * ($max - $min + 1)) + $min;
     }
 
+    /**
+     * 원 그리기
+     */
     function draw() {
         var canvas = document.getElementById('circle');
             if (canvas.getContext)
@@ -95,16 +100,17 @@ window.onload = function(){
                 ctx.beginPath();
                 ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
                 ctx.lineWidth = 3;
-                ctx.strokeStyle = '#FF0000';
+                ctx.strokeStyle = '#5BB144';
 
                 ctx.stroke();
-
-              
             }
     }
 
+    /**
+     * 룰렛 그리기
+     */
     function make() {
-        var canvas = document.getElementById('circle');
+       
         
 
         var c1 = parseInt(document.getElementById('c1').value);
@@ -113,25 +119,27 @@ window.onload = function(){
         var c4 = parseInt(document.getElementById('c4').value) + c3;
 
         rate = [0,c1,c2,c3,c4,360];
-
-        if (canvas.getContext)
+        
+         var canvas = document.getElementById('circle');
+         if (canvas.getContext)
         {
             var ctx = canvas.getContext('2d');
-            ctx.beginPath();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = '#FF0000';
-
-            for (var i = 0; i < rate.length; i++) {
-                ctx.fillStyle = color[i];
-                
+                       
+            for (var i = 1; i < rate.length; i++) {
+  
+                ctx.beginPath();
                 ctx.moveTo(300, 300);
-                ctx.arc(300,300,250,0, (Math.PI/180)*rate[i],false);
-                
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#5BB144';
+                ctx.arc(300,300,250,(Math.PI/180)*rate[i-1], (Math.PI/180)*rate[i],false);
+                console.log(((Math.PI/180) * rate[i] - Math.PI/180 * rate[i-1]) * 250 );
+                ctx.font = "20px";
+
                 ctx.closePath();
-                ctx.fill();
+                ctx.stroke();
             }
-             ctx.stroke();
         }
+           
     }
 };
 </script>
