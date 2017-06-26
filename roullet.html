@@ -43,6 +43,7 @@ window.onload = function(){
     var rate;
     var fillColor = ["#FFFFFF","#c82124","#3370d4","#FF9933","#339900","#CC6699"]
 
+    
     $('#start_btn').click(function(){
         rotation();
     });
@@ -57,7 +58,7 @@ window.onload = function(){
     function rotation(){
         $("#circle").rotate({
           angle:0,
-          animateTo:360 * 5 + randomize(0, 360),
+          animateTo:360 * 10 + randomize(0, 360),
           center: ["50%", "50%"],
           easing: $.easing.easeInOutElastic,
           callback: function(){
@@ -75,7 +76,7 @@ window.onload = function(){
         var n = $n;
         
         var real_angle = n%360;
-        $('#result_id').html("<p>움직인각도:" + n + "," + real_angle + "</p>");
+        // $('#result_id').html("<p>움직인각도:" + n + "," + real_angle + "</p>");
         var result;
 
         for (var i = rate.length; i >= 0; i--) {
@@ -85,8 +86,8 @@ window.onload = function(){
                 break;
             }
         }
-    
-        $('#result_id2').html("<p> 당첨:" + result + "</p>");
+        
+        alert("당첨 : " + result);
     }
  
     function randomize($min, $max){
@@ -120,7 +121,7 @@ window.onload = function(){
     function make() {
        
         
-
+        var textRadius = 160;
         var c1 = parseInt(document.getElementById('c1').value);
         var c2 = parseInt(document.getElementById('c2').value) + c1;
         var c3 = parseInt(document.getElementById('c3').value) + c2;
@@ -132,20 +133,32 @@ window.onload = function(){
          if (canvas.getContext)
         {
             var ctx = canvas.getContext('2d');
+            ctx.clearRect(0,0,600,600);
                        
             for (var i = 1; i < rate.length; i++) {
-  
+                var angle = (Math.PI/180) * rate[i-1];
+                var arc = (Math.PI/180) * rate[i] - angle;
                 ctx.beginPath();
                 ctx.moveTo(300, 300);
                 ctx.lineWidth = 3;
                 ctx.strokeStyle = '#000000';
                 ctx.arc(300,300,250,(Math.PI/180)*rate[i-1], (Math.PI/180)*rate[i],false);
-                ctx.fillStyle = fillColor[i]
+                ctx.fillStyle = fillColor[i];
+                ctx.stroke();
                 ctx.fill();
-                ctx.font = "20px";
+                
+                ctx.save();
+
+                ctx.translate(300 + Math.cos(angle + arc / 2) * textRadius, 300 + Math.sin(angle + arc / 2) * textRadius);
+
+                ctx.rotate(angle + arc / 2 + Math.PI / 2);
+                var text = "test";
+                ctx.fillStyle = "white";
+                ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
 
                 ctx.closePath();
-                ctx.stroke();
+               
+                ctx.restore();
             }
         }
            
