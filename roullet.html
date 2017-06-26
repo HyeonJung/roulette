@@ -41,6 +41,7 @@ window.onload = function(){
     
     var pArr = ["c1","c2","c3","c4","c5"];
     var rate;
+    var fillColor = ["#FFFFFF","#c82124","#3370d4","#FF9933","#339900","#CC6699"]
 
     $('#start_btn').click(function(){
         rotation();
@@ -50,6 +51,9 @@ window.onload = function(){
         make();
     })
 
+    /**
+     * 회전
+     */
     function rotation(){
         $("#circle").rotate({
           angle:0,
@@ -63,7 +67,10 @@ window.onload = function(){
           duration:5000
        });
     }
- 
+    
+    /**
+     * 당첨
+     */
     function endAnimate($n){
         var n = $n;
         
@@ -71,9 +78,10 @@ window.onload = function(){
         $('#result_id').html("<p>움직인각도:" + n + "," + real_angle + "</p>");
         var result;
 
-        for (var i = 1; i < rate.length; i++) {
-            if (real_angle >= rate[i - 1] && real_angle <= rate[i]) {
-                result = pArr[i - 1];
+        for (var i = rate.length; i >= 0; i--) {
+
+            if (real_angle < 360 - rate[i]) {
+                result = pArr[i];
                 break;
             }
         }
@@ -100,7 +108,7 @@ window.onload = function(){
                 ctx.beginPath();
                 ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
                 ctx.lineWidth = 3;
-                ctx.strokeStyle = '#5BB144';
+                ctx.strokeStyle = '#000000';
 
                 ctx.stroke();
             }
@@ -130,9 +138,10 @@ window.onload = function(){
                 ctx.beginPath();
                 ctx.moveTo(300, 300);
                 ctx.lineWidth = 3;
-                ctx.strokeStyle = '#5BB144';
+                ctx.strokeStyle = '#000000';
                 ctx.arc(300,300,250,(Math.PI/180)*rate[i-1], (Math.PI/180)*rate[i],false);
-                console.log(((Math.PI/180) * rate[i] - Math.PI/180 * rate[i-1]) * 250 );
+                ctx.fillStyle = fillColor[i]
+                ctx.fill();
                 ctx.font = "20px";
 
                 ctx.closePath();
