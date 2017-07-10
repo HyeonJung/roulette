@@ -27,7 +27,10 @@
 
 <div class="">
 각도 :
-<input type="number" id="c1"/><input type="number" id="c2"/><input type="number" id="c3"/><input type="number" id="c4"/>
+<input type="number" id="c1"/>
+<input type="number" id="c2"/>
+<input type="number" id="c3"/>
+<input type="number" id="c4"/>
 </div>
 문구 :
 <input type="text" id="text1" class="text_input"/>
@@ -35,6 +38,13 @@
 <input type="text" id="text3" class="text_input"/>
 <input type="text" id="text4" class="text_input"/>
 <input type="text" id="text5" class="text_input"/>
+
+포인트 :
+<input type="number" id="point1" class="text_input"/>
+<input type="number" id="point2" class="text_input"/>
+<input type="number" id="point3" class="text_input"/>
+<input type="number" id="point4" class="text_input"/>
+<input type="number" id="point5" class="text_input"/>
 
 <input type="button" value="만들기" id="make"/>
 
@@ -46,6 +56,7 @@ window.onload = function(){
     var rate;
     var fillColor = ["#FFFFFF","#c82124","#3370d4","#FF9933","#339900","#CC6699"]
     var text;
+    var point;
     
     $('#start_btn').click(function(){
         rotation();
@@ -80,17 +91,19 @@ window.onload = function(){
         
         var real_angle = n%360;
       
-        var result;
+        var resultText;
+        var resultPoint;
 
         for (var i = rate.length; i >= 0; i--) {
 
             if (real_angle < 360 - rate[i]) {
-                result = text[i];
+                resultText = text[i];
+                resultPoint = point[i];
                 break;
             }
         }
         
-        alert("당첨 : " + result);
+        alert("당첨 : " + resultText + "\n포인트 : " + resultPoint);
     }
  
     function randomize($min, $max){
@@ -135,13 +148,22 @@ window.onload = function(){
         var text4 = document.getElementById('text4').value;
         var text5 = document.getElementById('text5').value;
 
+        var point1 = document.getElementById('point1').value;
+        var point2 = document.getElementById('point2').value;
+        var point3 = document.getElementById('point3').value;
+        var point4 = document.getElementById('point4').value;
+        var point5 = document.getElementById('point5').value;
+
+
         if (c4 > 360) {
            alert("총 입력 값은 360을 넘을 수 없습니다.");
            return;
         }
 
         rate = [0,c1,c2,c3,c4,360];
-        text = [text1,text2,text3,text4,text5]
+        text = [text1,text2,text3,text4,text5];
+        point = [point1,point2,point3,point4,point5];
+
          var canvas = document.getElementById('circle');
          if (canvas.getContext)
         {
@@ -167,7 +189,13 @@ window.onload = function(){
                 ctx.rotate(angle + arc / 2 + Math.PI / 2);
                 var roulletText = text[i - 1];
                 ctx.fillStyle = "white";
+                ctx.font="25px Arial";
                 ctx.fillText(roulletText, -ctx.measureText(roulletText).width / 2, 0,55);
+
+                var pointText = point[i - 1];
+                ctx.font="30px Arial";
+                ctx.fillText(pointText, -ctx.measureText(pointText).width / 2, 50,55);
+
                 ctx.closePath();
                
                 ctx.restore();
