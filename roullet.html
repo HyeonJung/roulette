@@ -10,23 +10,69 @@
 #image{
   margin:50px 50px;z-index:10;
 }
-#n_id{position:absolute;left:490px;top:297px;z-index:20;}
+#n_id{position:absolute;left:650px;top:290px;z-index:20;}
 #start_btn{position:absolute;left:215px;top:210px;}
 #text_input{margin-left:250px;}
 #angle .input {width:20px;}
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-xl {
+  width: 150px;
+  height: 150px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 75px;
+}
 
 </style>
 </head>
 <body>
 
+<div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 <canvas id="circle" width="600" height="600"></canvas>
 <!--<img src="img/roulette.png" id="image">-->
-
 <img src="img/niddle.png" id="n_id">
-<img src="img/start2.png" id="start_btn">
 <br/>
+<a class="btn btn-success btn-circle btn-xl" style="top:225px; left:400px; position:absolute" id="start_btn"><span class="glyphicon glyphicon-repeat" style="font-size:70px; margin-top:25px"></span></a>
+</div>
 
-<div style="margin-bottom:10px">
+
+<div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
+
+<div class="col-md-2 col-lg-2 col-xs-2 col-sm-2 form-group" style="margin:auto;">
+    <h2>제목</h2><br/>
+</div>
+
+<div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+    <input class="form-control" type="text" style=" text-align:center; margin-top:20px"/>
+</div>
+
+<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 form-group" style="margin:auto;">
+    <h2>옵션 (최소 2, 최대 12)</h2><br/>
+</div>
+
+<div id="list">
+</div>
+
+<div class="col-md-2 col-lg-2 col-xs-2 col-sm-2 col-md-offset-4 col-sm-offset-4 col-lg-offset-4 col-xs-offset-4 form-group">
+    <button type="button" class="btn btn-primary btn-lg" style="margin-top:20px" id="add"><span class="glyphicon glyphicon-plus"></span>추가하기</button>
+</div>
+<div class="col-md-2 col-lg-2 col-xs-2 col-sm-2 form-group">
+    <button type="button" class="btn btn-success btn-lg" style="margin-top:20px" id="make">만들기</button>
+</div>
+
+</div>
+
+
+<!-- <div style="margin-bottom:10px">
 룰렛수 :
 <input type="number" id="roulletNum" style="margin-left:16px" value="1" onchange="numChange()"/>
 </div>
@@ -44,45 +90,22 @@
 <div id="pointDiv">
 포인트 :
 <input type="number" id="point1" class="text_input"/>
-</div>
+</div> -->
 
-<input type="button" value="만들기" id="make"/>
+<!-- <input type="button" value="만들기" id="make"/> -->
 
 
 
 
 <script>
-var roulletNum = 1;
+var roulletNum = 0;
 
-function numChange() {
-        roulletNum = parseInt(document.getElementById('roulletNum').value);
-
-        if (roulletNum < 1 || roulletNum > 9) {
-            alert("1~10 사이의 값만 가능합니다.");
-            roulletNum = 1;
-            document.getElementById('roulletNum').value = 1;
-            numChange();
-        }
-
-        var angleHtml = "각도 : ";
-        var contentHtml = "문구 : ";
-        var pointHtml = "포인트 : ";
-
-        for (var i = 1; i <= roulletNum; i++) {
-            if (i == roulletNum) {
-                angleHtml += '<input type="number" id="c' + i + '" style="margin-left:16px" disabled/>';
-            } else {
-                angleHtml += '<input type="number" id="c' + i + '" style="margin-left:16px"/>';
-            }
-            contentHtml += '<input type="text" id="text' + i + '" class="text_input" style="margin-left:16px" maxlength="4"/ >';
-            pointHtml += '<input type="number" id="point' + i + '" class="text_input" style="margin-left:16px"/>';
-            
-        }
-
-        document.getElementById('angleDiv').innerHTML = angleHtml;
-        document.getElementById('contentDiv').innerHTML = contentHtml;
-        document.getElementById('pointDiv').innerHTML = pointHtml;
+function deleteElement(element) {
+    $(element).parent().prev().remove();
+    $(element).parent().remove();
+    roulletNum--;
 }
+
 
 window.onload = function(){
 
@@ -101,6 +124,21 @@ window.onload = function(){
 
     $('#make').click(function() {
         make();
+    })
+
+    $('#add').click(function() {
+        if (roulletNum > 11) {
+            alert("최대 갯수를 초과하였습니다.");
+            return;
+        }
+
+        var html = '<div class="col-md-8 col-lg-8 col-xs-9 col-sm-9 col-md-offset-2 col-lg-offset-2 col-xs-offset-2 col-sm-offset-2">';
+        html += '<input class="form-control" type="text" style=" text-align:center;" maxlength="3"/></div>';
+        html += '<div class="col-md-1 col-lg-1 col-xs-1 col-sm-1">'
+        html += '<button type="button" class="btn btn-danger" style="margin:0 0 30px 0" onclick="deleteElement(this)"><span class="glyphicon glyphicon-remove"></span></button></div></div>'
+        $("#list").append(html);
+        roulletNum++;
+
     })
 
     /**
@@ -131,18 +169,16 @@ window.onload = function(){
         var real_angle = n%360;
 
         var resultText;
-        var resultPoint;
 
         for (var i = rate.length; i >= 0; i--) {
 
             if (real_angle < 360 - rate[i]) {
                 resultText = text[i];
-                resultPoint = point[i];
                 break;
             }
         }
 
-        alert("당첨 : " + resultText + "\n포인트 : " + resultPoint);
+        alert("당첨 : " + resultText);
     }
 
     function randomize($min, $max){
@@ -175,27 +211,29 @@ window.onload = function(){
      */
     function make() {
         var textRadius = 160;
-        
 
         rate = new Array();
-        text = new Array();
-        point = new Array();
         fillColor = new Array();
+        text = new Array();
 
         rate.push(0);
+        var angle = 360 / roulletNum;
 
-        for (var i = 1; i <= roulletNum; i++) {
+        var list = $("#list").find("div");
+        text.push(list.find("input").val());
 
-            if (i == roulletNum) {
-                document.getElementById('c'+i).value = 360 - rate[i - 1];
+        for (var i = 0; i < roulletNum; i++) {
+
+            if (i > 0) {
+                list = list.next().next();
+                console.log(list.val());
+                text.push(list.find("input").val());
             }
-            fillColor.push(colors[i % 5]);
 
-            rate.push(parseInt(document.getElementById('c'+i).value) + rate[i - 1]);
-            text.push(document.getElementById('text'+i).value);
-            point.push(document.getElementById('point'+i).value);
-            
+            fillColor.push(colors[i % 5]);
+            rate.push(angle + (angle * i)); 
         }
+
         fillColor.push("#CC6699");
         var canvas = document.getElementById('circle');
         if (canvas.getContext)
@@ -225,10 +263,6 @@ window.onload = function(){
                 ctx.fillStyle = "white";
                 ctx.font="25px Arial";
                 ctx.fillText(roulletText, -ctx.measureText(roulletText).width / 2, 0,55);
-
-                var pointText = point[i - 1];
-                ctx.font="20px Arial";
-                ctx.fillText(pointText, -ctx.measureText(pointText).width / 2, 50,55);
 
                 ctx.closePath();
 
