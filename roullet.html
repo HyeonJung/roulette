@@ -31,14 +31,32 @@
   line-height: 1.33;
   border-radius: 75px;
 }
-
+.overlay {
+  display: none;
+  z-index: 1000;
+  position: fixed;
+  width: 100%; height: 100%;
+  left: 0; top: 0;
+  background-color: rgba(0,0,0, 0.7);
+  overflow-x: hidden;
+  text-align:center;
+}
+.overlay h1 {
+  font-size: 100px;
+  color : #FFFFFF;
+  position : relative;
+  top : 40%;
+}
+.overlay span {
+  font-size:30px;
+  color : #FFFFFF;
+}
 </style>
 </head>
 <body>
 
 <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 <canvas id="circle" width="600" height="600"></canvas>
-<!--<img src="img/roulette.png" id="image">-->
 <img src="img/niddle.png" id="n_id">
 <br/>
 <a class="btn btn-success btn-circle btn-xl" style="top:225px; left:400px; position:absolute" id="start_btn"><span class="glyphicon glyphicon-repeat" style="font-size:70px; margin-top:25px"></span></a>
@@ -71,31 +89,12 @@
 
 </div>
 
-
-<!-- <div style="margin-bottom:10px">
-룰렛수 :
-<input type="number" id="roulletNum" style="margin-left:16px" value="1" onchange="numChange()"/>
+<div class="overlay">
+  <div class="col-md-offset-11 col-lg-offset-11 coll-xs-offset-11 col-sm-offset-11" style="margin-top:2%">
+  <a href="#" onclick="removeOverlay(); return false;"><span class="glyphicon glyphicon-remove"></span></a>
+  </div>
+  <h1></h1>
 </div>
-
-<div style="margin-bottom:10px" id="angleDiv">
-각도 :
-<input type="number" id="c1" style="margin-left:16px"  disabled/>
-</div>
-
-<div style="margin-bottom:10px" id="contentDiv">
-문구 :
-<input type="text" id="text1" class="text_input" style="margin-left:16px" maxlength="4"/ >
-</div>
-
-<div id="pointDiv">
-포인트 :
-<input type="number" id="point1" class="text_input"/>
-</div> -->
-
-<!-- <input type="button" value="만들기" id="make"/> -->
-
-
-
 
 <script>
 var roulletNum = 0;
@@ -104,6 +103,10 @@ function deleteElement(element) {
     $(element).parent().prev().remove();
     $(element).parent().remove();
     roulletNum--;
+}
+
+function removeOverlay() {
+  $(".overlay").hide().find("h1").text("");
 }
 
 
@@ -156,7 +159,7 @@ window.onload = function(){
                         var n = $(this).getRotateAngle();
                         endAnimate(n);
                     },
-          duration:15000
+          duration:5000
        });
     }
 
@@ -178,7 +181,7 @@ window.onload = function(){
             }
         }
 
-        alert("당첨 : " + resultText);
+        $(".overlay").show().find("h1").text(resultText);
     }
 
     function randomize($min, $max){
@@ -231,7 +234,7 @@ window.onload = function(){
             }
 
             fillColor.push(colors[i % 5]);
-            rate.push(angle + (angle * i)); 
+            rate.push(angle + (angle * i));
         }
 
         fillColor.push("#CC6699");
@@ -279,7 +282,7 @@ window.onload = function(){
 
     }
 
-    
+
 };
 </script>
 </body>
