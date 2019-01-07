@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 룰렛 </title>
+<meta charset="utf-8">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jqueryRotate.js"></script>
+<script type="text/javascript" src="js/roullet.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/roullet.css">
+<style>
+    @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+    * {font-family: "Noto Sans KR" , sans-serif}
+</style>
+</head>
+<body>
+
+<div class="col-md-6 col-xs-12 col-sm-12" style="text-align:center">
+  <div style="width:600px; display:inline-block; position:relative">
+    <canvas id="circle" width="600" height="600"></canvas>
+    <img src="img/arrow.png" id="n_id">
+    <br/>
+    <div class="btn btn-circle btn-xl"  id="start_btn">
+      <span style="display:block; padding:45px 0; font-size:30px">돌리기</span>
+      <!-- <span class="glyphicon glyphicon-repeat" style="font-size:70px; margin-top:25px"></span> -->
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
+
+  <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2 form-group" style="margin:auto;">
+      <h2>제목</h2><br/>
+  </div>
+
+  <div class="col-md-10 col-lg-10 col-xs-4 col-sm-4">
+    <input id= "title" class="form-control" type="text" style="margin-top:20px"/>
+  </div>
+
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 form-group" style="margin:auto;">
+      <h2>옵션입력 (최소 2, 최대 20)</h2><br/>
+  </div>
+
+  <div id="list" style="max-height:500px; overflow-y:auto; clear:both">
+  </div>
+
+  <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+    <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4 col-md-offset-2 col-lg-offset-2 col-xs-offset-2 col-sm-offset-2 form-group">
+      <button type="button" class="btn btn-primary btn-lg" style="margin-top:20px" id="add"><span class="glyphicon glyphicon-plus"></span>추가하기</button>
+    </div>
+    <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4 form-group">
+      <button type="button" class="btn btn-success btn-lg" style="margin-top:20px" id="make">만들기</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay">
+  <div class="col-md-offset-11 col-lg-offset-11 coll-xs-offset-11 col-sm-offset-11" style="margin-top:2%">
+  <a href="#" onclick="removeOverlay(); return false;"><span class="glyphicon glyphicon-remove"></span></a>
+  </div>
+  <h1></h1>
+  <h2></h2>
+</div>
+</body>
+</html>
